@@ -34,11 +34,6 @@ body,
 
 /* Grid */
 
-.container {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
 .row {
   position: relative;
   width: 100%;
@@ -379,4 +374,129 @@ button.primary,
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+
+hr {
+  background-color: var(--custom-panel-color);
+  height: 1px;
+  border: 0;
+}
+hr.home-divider {
+  margin: 20px 0;
+}
+
+.reminders-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: .83rem 0;
+}
+.reminders-header h2 {
+  margin: 0;
+}
+.reminders-header .add-reminder {
+  padding: 3px 8px;
+  border-radius: 9px;
+  color: #344afb;
+  border: 1px solid #344afb80;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: bold;
+}
+.reminders-header .add-reminder:hover {
+  background-color: #344afb26;
+  border: 1px solid transparent;
+}
+
+.reminder-img {
+  border-radius: 7px;
+  overflow: hidden;
+  max-width: 100%;
+}
+.reminder-img.image {
+  object-fit: cover;
+}
+.reminder-img.no-image {
+  background-color: #333;
+  border-radius: 7px;
+}
+
+.card-reminder-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  background-color: var(--custom-panel-color);
+  padding: 13px 13px 8px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+
+.card-reminder-wrapper .card-reminder-delete,
+.card-reminder-wrapper .new-card-reminder-delete {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  padding: 3px 8px;
+  border-radius: 9px;
+  color: #ed5249;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.card-reminder-wrapper .card-reminder-delete:hover {
+  background-color: #ed524926;
+}
+
+.card-reminder-wrapper .new-card-reminder-delete {
+  top: unset;
+  right: 10px;
+  bottom: 9px;
+  background-color: #ed524926;
+}
+.card-reminder-wrapper .new-card-reminder-delete:hover {
+  background-color: #ed52494D;
+}
+
+.card-reminder-wrapper .new-card-reminder-add {
+  position: absolute;
+  bottom: 9px;
+  right: 80px;
+  padding: 3px 8px;
+  border-radius: 9px;
+  color: #344afb;
+  background-color: #344afb26;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: bold;
+}
+.card-reminder-wrapper .new-card-reminder-add:hover {
+  background-color: #344afb4D;
+}
+
+.card-reminder-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card-reminder-body div {
+  text-align: start;
+}
+
+.card-reminder-body h2,
+.card-reminder-body p {
+  margin: 0;
+}
+
+.card-reminder-body .label-title {
+  font-size: 0.8rem;
+  color: var(--custom-color-secondary);
+}
+.card-reminder-body .card-reminder-body-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }

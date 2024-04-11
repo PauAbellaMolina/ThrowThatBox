@@ -2,7 +2,8 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import Auth from './Auth'
-import Account from './Account'
+// import Account from './Account'
+import Home from './Home'
 
 function App() {
   const [session, setSession] = useState(null)
@@ -18,8 +19,13 @@ function App() {
   }, [])
 
   return (
-    <div className="container" style={{ padding: '50px 0 100px 0' }}>
-      {!session ? <Auth /> : <Account key={session.user.id} session={session} />}
+    <div>
+      { !session ? 
+        <Auth />
+      :
+        <Home key={session.user.id} session={session} />
+        // <Account key={session.user.id} session={session} />
+      }
     </div>
   )
 }
