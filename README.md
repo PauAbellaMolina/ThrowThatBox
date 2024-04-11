@@ -1,8 +1,7 @@
-# React + Vite
+# ThrowThatBox
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Simple site to configure remainders to throw away boxes that you store in some cabinet just in case you need to return the product.
 
-Currently, two official plugins are available:
+Add a name, a photo, where did you store the box and a date to remind you and the rest is on us.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Just throw away the box when you receive the remainder email and live a clutter free life.
