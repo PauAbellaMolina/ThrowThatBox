@@ -40,28 +40,6 @@ export default function Home({ session }) {
     setLoading(false)
   }
 
-  async function deleteReminder(reminderId) {
-    try {
-      const { error } = await supabase
-        .from('reminders')
-        .delete()
-        .eq('id', reminderId)
-
-      if (error) {
-        throw error
-      } else {
-        getReminders(session, false)
-      }
-    } catch (error) {
-      console.error('Error deleting reminder: ', error.message)
-    }
-  }
-
-  function onAddNewReminder() {
-    console.log('Add new reminder')
-    setAddingNewReminder(true)
-  }
-
   return (
       <div>
         { loading ?
@@ -70,33 +48,30 @@ export default function Home({ session }) {
           <h1>ThowThatBox</h1>
           <p>Welcome, {session.user.email}</p>
           <hr className="home-divider" />
-          { !reminders?.length ? 
-            <div>No reminders yet</div> 
-          :
-            <div>
-              <div className="reminders-header">
-                <h2>Your reminders:</h2>
-                <span className="add-reminder" onClick={() => onAddNewReminder()}>+ Add new reminder</span>
-              </div>
-              { addingNewReminder ?
-                <NewCardReminder
-                  session={session}
-                  onAdd={() => {
-                    setAddingNewReminder(false)
-                    getReminders(session, false)
-                  }}
-                  onCancel={() => setAddingNewReminder(false)}
-                />
-              : null }
-              {reminders?.map((reminder, index) => (
-                <CardReminder
-                  key={index}
-                  reminder={reminder} 
-                  onDelete={() => deleteReminder(reminder.id)}
-                />
-              ))}
+          <div>
+            <div className="reminders-header">
+              <h2>{ !reminders?.length ? 'No reminders yet' : 'Your reminders:'}</h2>
+              <span className="add-reminder" onClick={() => setAddingNewReminder(true)}>+ Add new reminder</span>
             </div>
-          }  
+            { addingNewReminder ?
+              <NewCardReminder
+                session={session}
+                onSave={() => {
+                  setAddingNewReminder(false)
+                  getReminders(session, false)
+                }}
+                onCancel={() => setAddingNewReminder(false)}
+              />
+            : null }
+            {reminders?.map((reminder, index) => (
+              <CardReminder
+                session={session}
+                key={index}
+                reminder={reminder} 
+                onDelete={() => getReminders(session, false)}
+              />
+            ))}
+          </div>
         </>}
       </div>
     // <form onSubmit={updateProfile} className="form-widget">

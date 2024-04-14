@@ -11,7 +11,7 @@ export default function Img({ url, size }) {
 
   async function downloadImage(path) {
     try {
-      const { data, error } = await supabase.storage.from('avatars').download(path)
+      const { data, error } = await supabase.storage.from('reminder_imgs').download(path)
       if (error) {
         throw error
       }

@@ -170,7 +170,8 @@ label {
   text-transform: uppercase;
 }
 
-input {
+input,
+select {
   width: 100%;
   border-radius: 5px;
   border: var(--custom-border);
@@ -180,7 +181,8 @@ input {
   color: var(--custom-color);
 }
 
-input[disabled] {
+input[disabled],
+select[disabled] {
   color: var(--custom-color-secondary);
 }
 
@@ -243,7 +245,7 @@ button,
   cursor: pointer;
   text-align: center;
   font-size: 0.9rem;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 button.primary,
@@ -421,8 +423,17 @@ hr.home-divider {
   background-color: #333;
   border-radius: 7px;
 }
+.reminder-img.new-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.reminder-img.new-image label {
+  padding: 55px 30px;
+}
 
-.card-reminder-wrapper {
+.card-reminder-wrapper,
+.new-card-reminder-wrapper {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -434,7 +445,7 @@ hr.home-divider {
 }
 
 .card-reminder-wrapper .card-reminder-delete,
-.card-reminder-wrapper .new-card-reminder-delete {
+.new-card-reminder-wrapper .new-card-reminder-delete {
   position: absolute;
   top: 9px;
   right: 10px;
@@ -448,17 +459,17 @@ hr.home-divider {
   background-color: #ed524926;
 }
 
-.card-reminder-wrapper .new-card-reminder-delete {
+.new-card-reminder-wrapper .new-card-reminder-delete {
   top: unset;
   right: 10px;
   bottom: 9px;
   background-color: #ed524926;
 }
-.card-reminder-wrapper .new-card-reminder-delete:hover {
+.new-card-reminder-wrapper .new-card-reminder-delete:hover {
   background-color: #ed52494D;
 }
 
-.card-reminder-wrapper .new-card-reminder-add {
+.new-card-reminder-wrapper .new-card-reminder-save {
   position: absolute;
   bottom: 9px;
   right: 80px;
@@ -470,33 +481,61 @@ hr.home-divider {
   cursor: pointer;
   font-weight: bold;
 }
-.card-reminder-wrapper .new-card-reminder-add:hover {
+.card-reminder-wrapper .new-card-reminder-save:hover,
+.new-card-reminder-wrapper .new-card-reminder-save:hover {
   background-color: #344afb4D;
 }
 
-.card-reminder-body {
+.card-reminder-body,
+.new-card-reminder-body {
   display: flex;
   flex: 1;
   flex-direction: column;
   gap: 15px;
 }
+.new-card-reminder-body {
+  gap: 5px;
+}
 
-.card-reminder-body div {
+.card-reminder-body div,
+.new-card-reminder-body div {
   text-align: start;
 }
 
 .card-reminder-body h2,
-.card-reminder-body p {
+.new-card-reminder-body h2,
+.card-reminder-body p,
+.new-card-reminder-body p {
   margin: 0;
 }
 
-.card-reminder-body .label-title {
+.card-reminder-body .label-title,
+.new-card-reminder-body .label-title {
   font-size: 0.8rem;
   color: var(--custom-color-secondary);
 }
-.card-reminder-body .card-reminder-body-details {
+.card-reminder-body .card-reminder-body-details,
+.new-card-reminder-body .new-card-reminder-body-details {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 7px;
+}
+.new-card-reminder-body .new-card-reminder-body-details {
+  gap: 2px;
+
+}
+
+.new-card-reminder-body input#description {
+  width: 70%;
+  padding: 5px 8px;
+}
+.new-card-reminder-body .new-card-reminder-body-details input#location {
+  width: 40%;
+  padding: 5px 8px;
+}
+
+.new-card-reminder-body .new-card-reminder-body-details select {
+  width: 40%;
+  padding: 5px 8px;
 }
