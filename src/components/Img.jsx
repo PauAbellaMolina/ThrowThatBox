@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../supabaseClient'
 
-export default function Img({ url, size }) {
+export default function Img({ url }) {
   const [imageUrl, setImageUrl] = useState(null)
 
   useEffect(() => {
@@ -23,16 +23,18 @@ export default function Img({ url, size }) {
   }
 
   return (
-    <div>
+    <div className="reminder-img-wrapper">
       {imageUrl ? (
         <img
           src={imageUrl}
           alt="Image"
           className="reminder-img image"
-          style={{ height: size, width: size }}
+          style={{ height: 130, width: 130 }}
         />
       ) : (
-        <div className="reminder-img no-image" style={{ height: size, width: size }} />
+        <div className="reminder-img no-image" style={{ height: 130, width: 130 }}>
+          <label>No image</label>
+        </div>
       )}
     </div>
   )

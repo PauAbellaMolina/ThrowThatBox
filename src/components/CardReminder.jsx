@@ -21,13 +21,9 @@ export default function CardReminder({ session, reminder, onDelete }) {
 
   async function deleteReminder() {
     try {
-      // const { error } = await supabase
-      //   .from('reminders')
-      //   .delete()
-      //   .eq('id', reminder.id)
       const { user } = session;
 
-      let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminder.id), await supabase.storage.from('reminder_imgs').remove(user.id+'/'+reminder.img_url)]);
+      let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminder.id), await supabase.storage.from('reminder_imgs').remove([user.id+'/'+reminder.img_url])]);
 
       const { error } = deleteReminder
       const { error: uploadError } = deleteImage
@@ -43,14 +39,14 @@ export default function CardReminder({ session, reminder, onDelete }) {
 
 
   return (
-    <div className="card-reminder-wrapper" style={!reminder.img_url ? { paddingBottom: '13px' } : null}>
+    <div className="card-reminder-wrapper">
       <span className="card-reminder-delete" onClick={deleteReminder}>Delete</span>
       <Img
         url={reminderUrl}
-        size={130}
       />
       <div className="card-reminder-body">
-        <h2>{reminder.description}</h2>
+        { !reminder.description ? <></> : 
+        <h2>{reminder.description}</h2>}
         { !reminder.location && !reminder.date ? <></> : <>
           <div className="card-reminder-body-details">
             { !reminder.location ? <></> :

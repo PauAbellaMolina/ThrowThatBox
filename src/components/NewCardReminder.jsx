@@ -2,28 +2,35 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import { supabase } from '../supabaseClient'
+import loadingSpinner from '../assets/loadingSpinner.svg'
 import NewImg from "./NewImg";
 
 export default function NewCardReminder({ session, onSave, onCancel }) {
-  // const [parsedDate, setParsedDate] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [cancelLoading, setCancelLoading] = useState(false)
+  const [disableCancel, setDisableCancel] = useState(false)
+  const [saveLoading, setSaveLoading] = useState(false)
+  const [disableSave, setDisableSave] = useState(false)
   const [reminderId, setReminderId] = useState(null)
   const [imgUrl, setImgUrl] = useState(null)
   const [description, setDescription] = useState(null)
   const [location, setLocation] = useState(null)
   const [date, setDate] = useState(null)
 
-  // useEffect(() => {
-  //   setParsedDate(new Date(reminder.date).toLocaleDateString());
-  // }, [reminder.date]);
+  useEffect(() => {
+    const date = new Date()
+    date.setMonth(date.getMonth() + 1)
+    setDate(date)
+  }, []);
 
   async function updateReminder(event, imgUrl, justImg = false) {
     try {
       event.preventDefault()
 
-      setLoading(true)
-      const { user } = session
+      if (!justImg) {
+        setSaveLoading(true)
+      }
 
+      const { user } = session
       const updates = {
         user_id: user.id,
         description,
@@ -46,15 +53,17 @@ export default function NewCardReminder({ session, onSave, onCancel }) {
     } catch (error) {
       alert('Error updating reminder: ', error.message)
     } finally {
-      setLoading(false)
+      setSaveLoading(false)
+      setDisableSave(false)
+      setDisableCancel(false)
     }
   }
 
   async function cancelNewReminder() {
     try {
-      setLoading(true)
+      setCancelLoading(true)
       if (reminderId) {
-        let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminderId), await supabase.storage.from('reminder_imgs').remove(imgUrl)]);
+        let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminderId), await supabase.storage.from('reminder_imgs').remove([imgUrl])]);
 
         const { error } = deleteReminder
         const { error: uploadError } = deleteImage
@@ -66,21 +75,60 @@ export default function NewCardReminder({ session, onSave, onCancel }) {
       alert('Error deleting reminder: ', error.message)
     } finally {
       onCancel()
-      setLoading(false)
+      setCancelLoading(false)
     }
+  }
+
+  function parseSetDate(selectedDate) {
+    const date = new Date()
+    switch (selectedDate) {
+      case 'weekFromNow':
+        date.setDate(date.getDate() + 7)
+        break
+      case 'twoWeeksFromNow':
+        date.setDate(date.getDate() + 14)
+        break
+      case 'monthFromNow':
+        date.setMonth(date.getMonth() + 1)
+        break
+      case 'twoMonthsFromNow':
+        date.setMonth(date.getMonth() + 2)
+        break
+      case 'threeMonthsFromNow':
+        date.setMonth(date.getMonth() + 3)
+        break
+      case 'sixMonthsFromNow':
+        date.setMonth(date.getMonth() + 6)
+        break
+      case 'yearFromNow':
+        date.setFullYear(date.getFullYear() + 1)
+        break
+    }
+    setDate(date)
   }
 
   return (
     <form onSubmit={updateReminder} className="form-widget">
-      <div className="new-card-reminder-wrapper" style={!imgUrl ? { paddingBottom: '13px' } : null}>
-        <span className="new-card-reminder-delete" onClick={cancelNewReminder}>Cancel</span>
-        <button className="new-card-reminder-save" type="submit">Save</button>
+      <div className="new-card-reminder-wrapper">
+        <span className="new-card-reminder-delete" disabled={disableCancel} onClick={!disableCancel ? cancelNewReminder : null}>
+          { cancelLoading ? 
+            <img src={loadingSpinner} width="13" height="13" className="loading-spinner" alt="Loading spinner" />
+          : 'Cancel' }
+        </span>
+        <button className="new-card-reminder-save" type="submit" disabled={disableSave}>
+          { saveLoading ? 
+            <img src={loadingSpinner} width="13" height="13" className="loading-spinner" alt="Loading spinner" />
+          : 'Save' }
+        </button>
         <NewImg
           session={session}
           url={imgUrl}
-          size={130}
           onUpload={(event, url) => {
             updateReminder(event, url, true)
+          }}
+          onUploading={() => {
+            setDisableSave(true)
+            setDisableCancel(true)
           }}
         />
         <div className="new-card-reminder-body">
@@ -106,7 +154,11 @@ export default function NewCardReminder({ session, onSave, onCancel }) {
             </div>
             <div>
               <p className="label-title">Reminder date:</p>
-              <select name="selectedDate" defaultValue="monthFromNow">
+              <select
+                name="selectedDate"
+                defaultValue="monthFromNow"
+                onChange={(e) => parseSetDate(e.target.value)}
+              >
                 <option value="weekFromNow">In 1 week</option>
                 <option value="twoWeeksFromNow">In 2 weeks</option>
                 <option value="monthFromNow">In 1 month</option>

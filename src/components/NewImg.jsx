@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
+import loadingSpinner from '../assets/loadingSpinner.svg'
 import { supabase } from '../supabaseClient'
 
-export default function NewImg({ session, url, size, onUpload }) {
+export default function NewImg({ session, url, onUpload, onUploading }) {
   const [imageUrl, setImageUrl] = useState(null)
   const [uploading, setUploading] = useState(false)
+  const [loadingImg, setLoadingImg] = useState(false)
 
   useEffect(() => {
     if (url) downloadImage(url)
@@ -12,6 +14,7 @@ export default function NewImg({ session, url, size, onUpload }) {
 
   async function downloadImage(path) {
     try {
+      setLoadingImg(true)
       const { data, error } = await supabase.storage.from('reminder_imgs').download(path)
       if (error) {
         throw error
@@ -20,12 +23,15 @@ export default function NewImg({ session, url, size, onUpload }) {
       setImageUrl(url)
     } catch (error) {
       console.log('Error downloading image: ', error.message)
+    } finally {
+      setLoadingImg(false)
     }
   }
 
   async function uploadImage(event) {
     try {
       setUploading(true)
+      onUploading()
 
       if (!event.target.files || event.target.files.length === 0) {
         throw new Error('You must select an image to upload.')
@@ -48,22 +54,27 @@ export default function NewImg({ session, url, size, onUpload }) {
       alert('Error uploading image: ', error.message)
     } finally {
       setUploading(false)
+      setLoadingImg(true)
     }
   }
 
   return (
-    <div>
+    <div className="reminder-img-wrapper">
       {imageUrl ? (
         <img
           src={imageUrl}
           alt="Image"
           className="reminder-img image"
-          style={{ height: size, width: size }}
+          style={{ height: 130, width: 130 }}
         />
       ) : (
-        <div className="reminder-img no-image new-image" style={{ height: size, width: size }}>
+        <div className="reminder-img no-image new-image" style={{ height: 130, width: 130 }}>
           <label htmlFor="image">
-            {uploading ? 'Uploading ...' : '+ Upload'}
+            {loadingImg ? <>
+              <img src={loadingSpinner} className="loading-spinner" alt="Loading spinner" />
+            </> : 
+              uploading ? 'Uploading ...' : '+ Upload'
+            }
           </label>
           <input
             style={{

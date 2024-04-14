@@ -24,7 +24,6 @@ function App() {
         <Auth />
       :
         <Home key={session.user.id} session={session} />
-        // <Account key={session.user.id} session={session} />
       }
     </div>
   )
