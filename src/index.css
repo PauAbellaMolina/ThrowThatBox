@@ -381,6 +381,21 @@ button.primary,
 
 /* Custom css */
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  padding-right: 2px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .2);
+  border-radius: 7px;
+  transition: height ease-out .15s, width ease-out .15s;
+  cursor: default;
+}
+
 hr {
   background-color: var(--custom-panel-color);
   height: 1px;
@@ -539,7 +554,7 @@ hr.home-divider {
 .new-card-reminder-body p {
   margin: 0;
   max-width: 320px;
-  overflow: scroll;
+  overflow: overlay;
 }
 
 .card-reminder-body .label-title,
@@ -598,7 +613,7 @@ hr.home-divider {
   .card-reminder-body p,
   .new-card-reminder-body p {
     max-width: calc(100dvw - 265px);
-    overflow: scroll;
+    overflow: overlay;
     white-space: nowrap;
   }
 }

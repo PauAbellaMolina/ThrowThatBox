@@ -33,6 +33,7 @@ export default function NewCardReminder({ session, onSave, onCancel }) {
       const { user } = session
       const updates = {
         user_id: user.id,
+        email: user.email,
         description,
         location,
         date,
