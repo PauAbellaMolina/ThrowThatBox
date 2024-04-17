@@ -147,7 +147,6 @@ export default function NewCardReminder({ session, onSave, onCancel }) {
               <input
                 id="location"
                 type="text"
-                required
                 placeholder="Location"
                 value={location || ''}
                 onChange={(e) => setLocation(e.target.value)}

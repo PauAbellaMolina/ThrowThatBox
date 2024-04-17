@@ -16,29 +16,29 @@ export default function Home({ session }) {
 
     getReminders(session, ignore)
 
-    return () => {
+    return () => { //TODO PAU check if necessary and if so applicable to other places
       ignore = true
     }
   }, [session])
 
   async function getReminders(session, ignore) {
-    setLoading(true)
-    const { user } = session
-
-    const { data, error } = await supabase
-      .from('reminders')
-      .select(`id, description, location, date, img_url`)
-      .eq('user_id', user.id)
-
     if (!ignore) {
+      setLoading(true)
+      const { user } = session
+
+      const { data, error } = await supabase
+        .from('reminders')
+        .select(`id, description, location, date, img_url`)
+        .eq('user_id', user.id)
+
       if (error) {
         console.warn(error)
       } else if (data) {
         setReminders(data)
       }
-    }
 
-    setLoading(false)
+      setLoading(false)
+    }
   }
 
   return (

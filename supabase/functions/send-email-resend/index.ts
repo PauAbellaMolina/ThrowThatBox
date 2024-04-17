@@ -8,7 +8,7 @@ const handler = async (request: Request): Promise<Response> => {
   const reminder: { id: string, user_id: string, email: string, description: string, location: string, img_url: string, created_at: string } = await request.json()
   
   try {
-    if (!reminder || reminder?.email || reminder?.email === '') {
+    if (!reminder || !reminder?.email || reminder?.email === '') {
       throw new Error()
     }
     const supabase = createClient(
@@ -43,7 +43,7 @@ const handler = async (request: Request): Promise<Response> => {
         subject: 'ThrowThatBox - Time to throw away a box!',
         html: `
           <h2>It's time to throw away "${reminder?.description}"</h2>
-          <h3>You stored it at "${reminder?.location}" on ${new Date(reminder?.created_at).toLocaleDateString('en-GB')}.</h3>
+          <h3>You stored it"${reminder?.location ? ' at '+reminder?.location : ''}" on ${new Date(reminder?.created_at).toLocaleDateString('en-GB')}.</h3>
           ${base64 ? '<p>We attached a photo of the box. Happy clutter free life!</p>' : '<p>Happy clutter free life!</p>'}
           <p>ThrowThatBox</p>
         `,
