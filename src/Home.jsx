@@ -43,7 +43,7 @@ export default function Home({ session }) {
 
   return (
       <div>
-        <h1>ThowThatBox</h1>
+        <h1>📦 ThrowThatBox</h1>
         <p>Welcome, {session.user.email}</p>
         <hr className="home-divider" />
         <div>
