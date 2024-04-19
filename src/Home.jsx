@@ -41,10 +41,18 @@ export default function Home({ session }) {
     }
   }
 
+  async function onLogout() {
+    const { error } = await supabase.auth.signOut()
+    if (error) console.log('Error logging out:', error.message)
+  }
+
   return (
       <div>
         <h1>📦 ThrowThatBox</h1>
-        <p>Welcome, {session.user.email}</p>
+        <div className="user-row">
+          <p>Welcome, {session.user.email}</p>
+          <p className="logout" onClick={() => onLogout()}>Log out</p>
+        </div>
         <hr className="home-divider" />
         <div>
           <div className="reminders-header">

@@ -11,13 +11,16 @@ function App() {
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
+      if (!session) {
+        setRealSession(null)
+      }
     });
     return () => {
       data.subscription.unsubscribe();
     };
   }, []);
 
-  useEffect(() => { //TODO PAU this looks like it works, but test it deeply and try to find a less hacky way to do it
+  useEffect(() => { //TODO PAU this looks like it works, but test it deeply
     if (!realSession && session) {
       setRealSession(session)
     }
@@ -25,16 +28,6 @@ function App() {
       setRealSession(session)
     }
   }, [session, realSession]);
-
-  // useEffect(() => {
-  //   supabase.auth.getSession().then(({ data: { session: authSession } }) => {
-  //     setSession(authSession)
-  //   })
-
-  //   supabase.auth.onAuthStateChange((_event, authSession) => {
-  //     setSession(authSession)
-  //   })
-  // }, [])
 
   return (
     <div>

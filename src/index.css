@@ -405,6 +405,24 @@ hr.home-divider {
   margin: 20px 0;
 }
 
+.user-row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: space-between;
+}
+.user-row p {
+  margin: 0;
+}
+.user-row p.logout {
+  color: #fc7e77;
+  cursor: pointer;
+  font-size: .8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+}
+
 .loading-home {
   display: flex;
   justify-content: center;
