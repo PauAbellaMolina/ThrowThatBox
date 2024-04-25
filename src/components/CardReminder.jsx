@@ -2,28 +2,28 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import { supabase } from '../supabaseClient'
-import Img from "./Img";
+import Img from "./Img"
 
 export default function CardReminder({ session, reminder, onDelete }) {
-  const [parsedDate, setParsedDate] = useState(null);
-  const [reminderUrl, setReminderUrl] = useState(null);
+  const [parsedDate, setParsedDate] = useState(null)
+  const [reminderUrl, setReminderUrl] = useState(null)
 
   useEffect(() => {
-    setParsedDate(new Date(reminder.date).toLocaleDateString());
-  }, [reminder.date]);
+    setParsedDate(new Date(reminder.date).toLocaleDateString())
+  }, [reminder.date])
 
   useEffect(() => {
-    const { user } = session;
+    const { user } = session
     if (user.id && reminder.img_url) {
-      setReminderUrl(user.id+'/'+reminder.img_url);
+      setReminderUrl(user.id+'/'+reminder.img_url)
     }
-  }, [reminder.img_url, session]);
+  }, [reminder.img_url, session])
 
   async function deleteReminder() {
     try {
-      const { user } = session;
+      const { user } = session
 
-      let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminder.id), await supabase.storage.from('reminder_imgs').remove([user.id+'/'+reminder.img_url])]);
+      let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminder.id), await supabase.storage.from('reminder_imgs').remove([user.id+'/'+reminder.img_url])])
 
       const { error } = deleteReminder
       const { error: uploadError } = deleteImage

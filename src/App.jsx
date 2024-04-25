@@ -10,24 +10,24 @@ function App() {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
+      setSession(session)
       if (!session) {
         setRealSession(null)
       }
-    });
+    })
     return () => {
-      data.subscription.unsubscribe();
-    };
-  }, []);
+      data.subscription.unsubscribe()
+    }
+  }, [])
 
-  useEffect(() => { //TODO PAU this looks like it works, but test it deeply
+  useEffect(() => {
     if (!realSession && session) {
       setRealSession(session)
     }
     if (session && session?.access_token !== realSession?.access_token) {
       setRealSession(session)
     }
-  }, [session, realSession]);
+  }, [session, realSession])
 
   return (
     <div>

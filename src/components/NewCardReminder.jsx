@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../supabaseClient'
 import loadingSpinner from '../assets/loadingSpinner.svg'
-import NewImg from "./NewImg";
+import NewImg from "./NewImg"
 
 export default function NewCardReminder({ session, onSave, onCancel }) {
   const [cancelLoading, setCancelLoading] = useState(false)
@@ -20,7 +20,7 @@ export default function NewCardReminder({ session, onSave, onCancel }) {
     const date = new Date()
     date.setMonth(date.getMonth() + 1)
     setDate(date)
-  }, []);
+  }, [])
 
   async function updateReminder(event, imgUrl, justImg = false) {
     try {
@@ -64,7 +64,7 @@ export default function NewCardReminder({ session, onSave, onCancel }) {
     try {
       setCancelLoading(true)
       if (reminderId) {
-        let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminderId), await supabase.storage.from('reminder_imgs').remove([imgUrl])]);
+        let [deleteReminder, deleteImage] = await Promise.all([await supabase.from('reminders').delete().eq('id', reminderId), await supabase.storage.from('reminder_imgs').remove([imgUrl])])
 
         const { error } = deleteReminder
         const { error: uploadError } = deleteImage

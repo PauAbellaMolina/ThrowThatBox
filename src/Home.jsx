@@ -12,31 +12,29 @@ export default function Home({ session }) {
   const [addingNewReminder, setAddingNewReminder] = useState(false)
 
   useEffect(() => {
-    let ignore = false
+    let unmounted = false
+    
+    setLoading(true)
+    getReminders(session, unmounted)
 
-    getReminders(session, ignore)
-
-    return () => { //TODO PAU check if necessary and if so applicable to other places
-      ignore = true
+    return () => {
+      unmounted = true
     }
   }, [session])
 
-  async function getReminders(session, ignore) {
-    if (!ignore) {
-      setLoading(true)
-      const { user } = session
+  async function getReminders(session, unmounted) {
+    const { user } = session
+    const { data, error } = await supabase
+      .from('reminders')
+      .select(`id, description, location, date, img_url`)
+      .eq('user_id', user.id)
 
-      const { data, error } = await supabase
-        .from('reminders')
-        .select(`id, description, location, date, img_url`)
-        .eq('user_id', user.id)
-
+    if (!unmounted) {
       if (error) {
         console.warn(error)
       } else if (data) {
         setReminders(data)
       }
-
       setLoading(false)
     }
   }

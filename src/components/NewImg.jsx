@@ -9,22 +9,29 @@ export default function NewImg({ session, url, onUpload, onUploading }) {
   const [loadingImg, setLoadingImg] = useState(false)
 
   useEffect(() => {
-    if (url) downloadImage(url)
+    let unmounted = false
+    if (url) {
+      setLoadingImg(true)
+      downloadImage(url, unmounted)
+    }
+
+    return () => {
+      unmounted = true
+    }
   }, [url])
 
-  async function downloadImage(path) {
+  async function downloadImage(path, unmounted) {
     try {
-      setLoadingImg(true)
       const { data, error } = await supabase.storage.from('reminder_imgs').download(path)
       if (error) {
         throw error
       }
       const url = URL.createObjectURL(data)
-      setImageUrl(url)
+      if (!unmounted) setImageUrl(url)
     } catch (error) {
       console.log('Error downloading image: ', error.message)
     } finally {
-      setLoadingImg(false)
+      if (!unmounted) setLoadingImg(false)
     }
   }
 
